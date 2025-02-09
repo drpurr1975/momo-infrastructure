@@ -38,7 +38,12 @@ override.tf.json
 # example: *tfplan*
 
 # Ignore CLI configuration files
+<<<<<<< HEAD
 **/.terraformrc
 **/terraform.rc
+=======
+.terraformrc
+terraform.rc
+>>>>>>> 9281688 (add terraform pipeline)
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform

@@ -44,7 +44,7 @@ module "kube" {
     "yc-k8s-ng-01" = {
       description = "Kubernetes nodes group 01"
       fixed_scale = {
-        size = 1
+        size = var.size
       }
       node_labels = {
         role        = "worker-01"
