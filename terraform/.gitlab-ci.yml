@@ -2,11 +2,11 @@ image:
   name: hashicorp/terraform:1.5.7
   entrypoint:
     - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/yandex-cloud/bin'
 
 cache:
   paths:
-    - .terraform
+    - terraform/.terraform
 
 variables:
   YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/yc-sa-key.json
@@ -41,9 +41,8 @@ validate:
 plan:
   stage: plan
   script:
-    - terraform plan -out="planfile"
-    - ls -la
-  artifacts:
+    - terraform plan -out="planfile" -var="cloud_id=$YC_CLOUD_ID" -var="folder_id=$YC_FOLDER_ID"
+  artifacts:  
     paths:
       - terraform/planfile
 
@@ -51,9 +50,6 @@ apply:
   stage: apply
   script:
     - terraform apply -auto-approve "planfile"
-<<<<<<< HEAD
-  when: manual
-=======
     - export CLUSTER_ID=$(terraform output -raw cluster_id)
     - apk update
     - apk add bash curl
@@ -70,4 +66,3 @@ apply:
     paths:
       - terraform/kubeconfig
     expire_in: 8h
->>>>>>> 0b04307 (add helm charts)

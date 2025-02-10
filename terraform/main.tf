@@ -46,10 +46,21 @@ module "kube" {
       fixed_scale = {
         size = var.size
       }
+      node_cores = 2
+      node_memory = 4
+      disk_size = 48
       node_labels = {
         role        = "worker-01"
         environment = "prod"
       }
     }
   }
+  # custom_ingress_rules = {
+  #   "rule1" = {
+  #     protocol = "TCP"
+  #     description = "rule-1"
+  #     v4_cidr_blocks = ["0.0.0.0/0"]
+  #     port = 80
+  #   }
+  # }
 }

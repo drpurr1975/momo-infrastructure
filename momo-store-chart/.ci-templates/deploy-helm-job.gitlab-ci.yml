@@ -1,0 +1,9 @@
+spec:
+  inputs:
+    stage:
+      default: deploy
+    image:
+---
+.deploy-helm-job:
+  stage: $[[ inputs.stage ]]
+  image: $[[ inputs.image ]]

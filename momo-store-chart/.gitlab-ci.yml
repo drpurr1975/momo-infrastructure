@@ -1,0 +1,33 @@
+---
+stages:
+  - deploy
+
+include:
+  - local: 'momo-store-chart/.ci-templates/deploy-helm-job.gitlab-ci.yml'
+    inputs:
+      stage: deploy
+      image: alpine/helm:latest
+
+deploy-services-job:
+  extends: .deploy-helm-job
+  script:
+    - |
+      mkdir -p ~/.kube
+      echo "$KUBECONFIG" > ~/.kube/config && export KUBECONFIG=~/.kube/config
+      helm repo add nexus $NEXUS_HELM_REPO --username $NEXUS_USERNAME --password $NEXUS_PASSWORD
+      helm repo update
+      helm upgrade --install sausage-store \
+      --set environment=prod \
+      --set sausage-frontend.ingress.host="kurenkov-mikhail-033.k8s.praktikum-services.tech" \
+      --set sausage-backend-report.mongodb.uri="mongodb://$MONGODB_USERNAME:$MONGODB_PASSWORD@$MONGODB_HOST:27018/$MONGO_DATABASE?tls=true" \
+      --set Release.Namespace="std-033-59" \
+      --atomic --timeout 30m \
+      nexus/sausage-store-chart
+  after_script:
+    - rm -f /.kube/config
+  rules:
+  - when: manual
+    # changes:
+    #   - sausage-store-chart/*
+  environment:
+    name: helm

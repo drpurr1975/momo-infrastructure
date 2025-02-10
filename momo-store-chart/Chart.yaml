@@ -1,0 +1,17 @@
+apiVersion: v2
+name: sausage-store-chart
+description: A Sausage Store Helm chart for Kubernetes
+type: application
+version: 0.3.2
+appVersion: "1.1"
+
+dependencies:
+  - name: sausage-backend-report
+    version: "{{ .Chart.Version }}"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+  - name: sausage-backend
+    version: "{{ .Chart.Version }}"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+  - name: sausage-frontend
+    version: "{{ .Chart.Version }}"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"

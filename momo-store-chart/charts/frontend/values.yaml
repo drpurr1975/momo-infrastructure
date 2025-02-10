@@ -1,0 +1,37 @@
+# The registry and repository values are defined in the global section of the values.yaml file.
+# The variables are used in the deployment.yaml file to define the image field in the containers section.
+image:
+  tag: latest
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 0.1
+  limits:
+    cpu: 0.1
+strategy:
+  type: Recreate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 1
+replicas: 1
+revisionHistoryLimit: 12
+# The variables are used in the ingress.yaml file.
+ingress:
+  host: "surname-first_name-cohort00.k8s.praktikum-services.tech" #dummy value
+# The variables are used in the vpa.yaml file.
+updatePolicy:
+  updateMode: "Off"
+containerPolicies:
+    containerName: "*"
+    minAllowed:
+      cpu: 0
+      memory: 0Mi      
+    maxAllowed:
+      cpu: 1
+      memory: 512Mi
+# The variables are used in the service.yaml file.
+service:
+  type: ClusterIP
+  ports:
+    port: 8080
+    targetPort: 8080
