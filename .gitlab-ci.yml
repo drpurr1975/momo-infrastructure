@@ -1,6 +1,8 @@
 ---
 stages:
+  - terraform
   - kubernetes
+  - helm
 
 yc-terraform:
   stage: kubernetes
@@ -11,3 +13,23 @@ yc-terraform:
   # rules:
   #   - changes:
   #     - frontend/**/*
+
+yc-kubernetes:
+  stage: kubernetes
+  needs:
+    - job: yc-terraform
+      artifacts: true
+  trigger:
+    include:
+      - local: 'kubernetes/.gitlab-ci.yml'
+    strategy: depend
+  # rules:
+  #   - changes:
+  #     - frontend/**/*
+
+# helm:
+#   stage: helm
+#   trigger:
+#     include:
+#       - local: 'momo-store-chart/.gitlab-ci.yml'
+#     strategy: depend

@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.alb.yc.io/subnets: fl86j1k5qddvoef4e9hq
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.alb.yc.io/external-ipv4-address: 130.193.59.166
+    # ingress.alb.yc.io/group-name: momo-store
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "momo-store.drpurr.link"
+      secretName: yc-certmgr-cert-id-fpq77fs47k3gr2bm4s31
+  rules:
+    - host: "momo-store.drpurr.link"
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend
+              port:
+                number: 80

@@ -51,4 +51,21 @@ apply:
   stage: apply
   script:
     - terraform apply -auto-approve "planfile"
+    - export CLUSTER_ID=$(terraform output -raw cluster_id)
+    - apk update
+    - apk add bash curl
+    - export PATH="$PATH:/root/yandex-cloud/bin"
+    - curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+    - yc config set cloud-id $YC_CLOUD_ID
+    - yc config set folder-id $YC_FOLDER_ID
+    - yc config set service-account-key /tmp/yc-sa-key.json
+    - export YC_TOKEN=$(yc iam create-token)
+    - yc managed-kubernetes cluster get-credentials $CLUSTER_ID --external --force
+    - cp /root/.kube/config ./kubeconfig
   when: manual
+  artifacts:
+    paths:
+      - terraform/kubeconfig
+    expire_in: 8h
+  trigger:
+    strategy: depend
