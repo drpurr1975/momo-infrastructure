@@ -1,21 +1,141 @@
 ---
 stages:
   - terraform
-  - helm
+  - deploy
+  - destroy
 
-yc-terraform:
+terraform:
   stage: terraform
-  trigger:
-    include:
-      - local: 'terraform/.gitlab-ci.yml'
-    strategy: depend
-  # rules:
-  #   - changes:
-  #     - frontend/**/*
+  image:
+    name: hashicorp/terraform:1.5.7
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/yandex-cloud/bin'
 
-# helm:
-#   stage: helm
-#   trigger:
-#     include:
-#       - local: 'momo-store-chart/.gitlab-ci.yml'
-#     strategy: depend
+  cache:
+    paths:
+      - terraform/.terraform
+
+  variables:
+    YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/yc-sa-key.json
+
+  before_script:
+    - cd terraform
+    - |
+      cat <<EOF >> ~/.terraformrc
+      provider_installation {
+        network_mirror {
+          url = "https://terraform-mirror.yandexcloud.net/"
+          include = ["registry.terraform.io/*/*"]
+        }
+        direct {
+          exclude = ["registry.terraform.io/*/*"]
+        }
+      }
+      EOF
+    - terraform init
+    - echo $YC_KEY > /tmp/yc-sa-key.json
+    - mkdir -p ~/.kube
+  script:
+    - terraform validate
+    - terraform plan -out="planfile" -var="cloud_id=$YC_CLOUD_ID" -var="folder_id=$YC_FOLDER_ID"
+    - terraform apply -auto-approve "planfile"
+    - export CLUSTER_ID=$(terraform output -raw cluster_id)
+    - export PATH="$PATH:/root/yandex-cloud/bin"
+    - chmod +x ../yc_auth.sh
+    - ../yc_auth.sh
+    - yc managed-kubernetes cluster get-credentials $CLUSTER_ID --external --force --kubeconfig ./kubeconfig
+    - export YC_TOKEN=$(yc iam create-token)
+    - chmod 755 ./kubeconfig
+    - chmod 777 /root/yandex-cloud/bin/yc
+  after_script:
+    - rm -f ~/.kube/config
+
+  artifacts:
+    paths:
+      - terraform/.terraform
+      - terraform/kubeconfig
+    expire_in: 1h
+
+deploy:
+  stage: deploy
+  image: alpine/helm:latest
+
+  before_script:
+    - echo $YC_KEY > /tmp/yc-sa-key.json
+    - mkdir -p ~/.kube
+    - cp terraform/kubeconfig ~/.kube/config
+    - export PATH="$PATH:/root/yandex-cloud/bin"
+    - chmod +x ./yc_auth.sh
+    - ./yc_auth.sh
+    - export YC_TOKEN=$(yc iam create-token)
+    - |
+      export CHART_VERSION=$(grep "^version:" momo-store-chart/Chart.yaml | cut -d' ' -f2-)
+      helm package momo-store-chart/charts/backend/
+      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-backend-$CHART_VERSION.tgz
+      helm package momo-store-chart/charts/frontend/
+      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-frontend-$CHART_VERSION.tgz
+      helm package momo-store-chart/
+      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-store-chart-$CHART_VERSION.tgz
+  script: 
+    - |
+      export KUBECONFIG=~/.kube/config
+      helm repo add nexus $NEXUS_HELM_REPO --username $NEXUS_USERNAME --password $NEXUS_PASSWORD
+      helm repo update
+      helm upgrade --install momo-store \
+      --namespace="default" \
+      --atomic --timeout 30m \
+      nexus/momo-store-chart
+  after_script:
+    - rm -f ~/.kube/config
+
+  dependencies:
+    - terraform
+  needs:
+    - terraform
+
+
+destroy:
+  stage: destroy
+  image:
+    name: hashicorp/terraform:1.5.7
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/yandex-cloud/bin'
+  cache:
+    paths:
+      - terraform/.terraform
+
+  before_script:
+    - ls -la
+    - cd terraform
+    - |
+      cat <<EOF >> ~/.terraformrc
+      provider_installation {
+        network_mirror {
+          url = "https://terraform-mirror.yandexcloud.net/"
+          include = ["registry.terraform.io/*/*"]
+        }
+        direct {
+          exclude = ["registry.terraform.io/*/*"]
+        }
+      }
+      EOF
+    - terraform init
+    - echo $YC_KEY > /tmp/yc-sa-key.json
+    - mkdir -p ~/.kube
+    - cp ./kubeconfig ~/.kube/config
+    - export PATH="$PATH:/root/yandex-cloud/bin"
+    - chmod +x ../yc_auth.sh
+    - ../yc_auth.sh
+    - export YC_TOKEN=$(yc iam create-token)
+  script:
+    - terraform destroy -auto-approve -var="cloud_id=$YC_CLOUD_ID" -var="folder_id=$YC_FOLDER_ID"
+  after_script:
+    - rm -f ~/.kube/config
+
+  when: manual
+  dependencies:
+    - terraform
+  needs:
+    - terraform

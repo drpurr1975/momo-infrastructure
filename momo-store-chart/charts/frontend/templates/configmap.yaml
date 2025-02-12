@@ -10,19 +10,39 @@ data:
     }
     http {
       server {
+          listen 8080;
+          server_name localhost;
 
-        listen 8080;
+          root /usr/share/nginx/html;
+          index index.html index.htm index.nginx-debian.html;
 
+          location /css/ {
+              root /usr/share/nginx/html;
+          }
+          location /img/ {
+              root /usr/share/nginx/html;
+          }
+          location /js/ {
+              root /usr/share/nginx/html;
+          }
+          
+          location /auth {
+              proxy_pass http://momo-backend-service:8081;
+          }
+          location /products {
+              proxy_pass http://momo-backend-service:8081/products;
+          }
+          location /categories {
+              proxy_pass http://momo-backend-service:8081/categories;
+          }
+            location /catalog/products {
+              proxy_pass http://momo-backend-service:8081/products;
+          }
+          location /catalog/categories {
+              proxy_pass http://momo-backend-service:8081/categories;
+          }
         location / {
-          root   /usr/share/nginx/html;
-          index  index.html;
-          try_files $uri $uri/ /index.html;
-        }
-
-        location /api {
-            proxy_pass http://sausage-backend-service:8080;
+          try_files $uri $uri/ =404;
         }
       }
     }
-  LOG_PATH: /app
-  REPORT_PATH: /app

@@ -9,8 +9,25 @@ metadata:
 spec:
   selector:
     app: {{ .Chart.Name }}
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - port: {{ .Values.service.ports.port }}
       protocol: TCP
       targetPort: {{ .Values.service.ports.targetPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-loadbalancer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  ports:
+    - port: {{ .Values.service.ports.port }}
+      name: plaintext
+      targetPort: {{ .Values.service.ports.targetPort }}
+  selector:
+    app: {{ .Chart.Name }}

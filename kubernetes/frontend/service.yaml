@@ -13,4 +13,33 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-loadbalancer
+  namespace: default
+spec:
   type: LoadBalancer
+  loadBalancerIP: 130.193.59.166
+  ports:
+    - port: 80
+      name: plaintext
+      targetPort: 8080
+  selector:
+    app: frontend
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-nodeport
+#   namespace: default
+# spec:
+#   selector:
+#     app: frontend
+#   type: NodePort
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 8080

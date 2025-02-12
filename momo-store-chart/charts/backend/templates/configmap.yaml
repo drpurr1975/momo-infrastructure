@@ -4,6 +4,3 @@ kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}-config
   namespace: {{ .Release.Namespace }}
-data:
-  LOG_PATH: /app
-  REPORT_PATH: /app

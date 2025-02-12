@@ -1,6 +1,6 @@
 apiVersion: v2
-name: sausage-backend
-description: A Sausage Store Backend Helm chart for Kubernetes
+name: momo-backend
+description: A Momo Store Backend Helm chart for Kubernetes
 type: application
-version: 0.3.2
+version: 0.1.0
 appVersion: "1.1"

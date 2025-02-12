@@ -1,17 +1,14 @@
 apiVersion: v2
-name: sausage-store-chart
-description: A Sausage Store Helm chart for Kubernetes
+name: momo-store-chart
+description: A Momo Store Helm chart for Kubernetes
 type: application
-version: 0.3.2
+version: 0.1.0
 appVersion: "1.1"
 
 dependencies:
-  - name: sausage-backend-report
+  - name: momo-backend
     version: "{{ .Chart.Version }}"
     repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
-  - name: sausage-backend
-    version: "{{ .Chart.Version }}"
-    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
-  - name: sausage-frontend
+  - name: momo-frontend
     version: "{{ .Chart.Version }}"
     repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"

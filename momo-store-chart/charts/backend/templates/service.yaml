@@ -9,7 +9,7 @@ metadata:
 spec:
   selector:
     app: {{ .Chart.Name }}
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - port: {{ .Values.service.ports.port }}
       protocol: TCP

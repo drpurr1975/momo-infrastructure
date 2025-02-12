@@ -1,6 +1,0 @@
-apiVersion: v2
-name: sausage-backend-report
-description: A Sausage Store Backend-Report Helm chart for Kubernetes
-type: application
-version: 0.3.2
-appVersion: "1.1"
