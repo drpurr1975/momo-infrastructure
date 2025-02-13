@@ -41,6 +41,9 @@ data:
           location /catalog/categories {
               proxy_pass http://momo-backend-service:8081/categories;
           }
+          location /metrics {
+              proxy_pass http://momo-backend-service:8081/metrics;
+          }
         location / {
           try_files $uri $uri/ =404;
         }
