@@ -69,14 +69,7 @@ deploy:
     - chmod +x ./yc_auth.sh
     - ./yc_auth.sh
     - export YC_TOKEN=$(yc iam create-token)
-    - |
-      export CHART_VERSION=$(grep "^version:" momo-store-chart/Chart.yaml | cut -d' ' -f2-)
-      helm package momo-store-chart/charts/backend/
-      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-backend-$CHART_VERSION.tgz
-      helm package momo-store-chart/charts/frontend/
-      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-frontend-$CHART_VERSION.tgz
-      helm package momo-store-chart/
-      curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD $NEXUS_HELM_REPO --upload-file ./momo-store-chart-$CHART_VERSION.tgz
+    - momo-store-chart/pack_upload.sh
   script: 
     - |
       export KUBECONFIG=~/.kube/config

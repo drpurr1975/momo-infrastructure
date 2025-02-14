@@ -43,12 +43,17 @@ module "kube" {
   node_groups = {
     "yc-k8s-ng-01" = {
       description = "Kubernetes nodes group 01"
-      fixed_scale = {
-        size = var.size
+      # fixed_scale = {
+      #   size = var.size_initial
+      # }
+      auto_scale = {
+        min     = var.size_min
+        max     = var.size_max
+        initial = var.size_initial
       }
-      node_cores = 2
-      node_memory = 4
-      disk_size = 48
+      node_cores = 4
+      node_memory = 8
+      disk_size = 64
       node_labels = {
         role        = "worker-01"
         environment = "prod"
