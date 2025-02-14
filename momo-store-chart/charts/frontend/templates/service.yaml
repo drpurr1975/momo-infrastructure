@@ -14,20 +14,24 @@ spec:
     - port: {{ .Values.service.ports.port }}
       protocol: TCP
       targetPort: {{ .Values.service.ports.targetPort }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Chart.Name }}-loadbalancer
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ .Chart.Name }}
-spec:
-  type: LoadBalancer
-  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
-  ports:
-    - port: {{ .Values.service.ports.port }}
-      name: plaintext
-      targetPort: {{ .Values.service.ports.targetPort }}
-  selector:
-    app: {{ .Chart.Name }}
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ingress-loadbalancer
+#   namespace: ingress-nginx
+#   annotations:
+#     service.beta.kubernetes.io/yandex-load-balancer-type: "external"
+# spec:
+#   type: LoadBalancer
+#   externalTrafficPolicy: Local
+#   loadBalancerIP: {{ .Values.externalIP }}
+#   ports:
+#     - name: http
+#       port: 80
+#       targetPort: 80
+#     # - name: https
+#     #   port: 443
+#     #   targetPort: 443
+#   selector:
+#     app.kubernetes.io/name: ingress-nginx

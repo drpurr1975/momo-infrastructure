@@ -100,7 +100,6 @@ destroy:
       - terraform/.terraform
 
   before_script:
-    - ls -la
     - cd terraform
     - |
       cat <<EOF >> ~/.terraformrc

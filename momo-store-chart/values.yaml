@@ -5,3 +5,22 @@ global:
   appname: momo-store
   environment: prod
   repository: https://nexus.praktikum-services.tech/repository/sausage-store-helm-mikhail-kurenkov-033-new/
+
+namespace: external-secrets
+secretStore:
+  name: secret-store
+
+externalSecret:
+  name: external-secret
+  targetSecretName: k8s-secret
+  certificateID: fpq8mi49s0q05pk0q2kh
+  # app:
+  #   host: momo-store.koolthing.click
+  #   backend:
+  #     name: frontend
+  #     port: 80
+  # grafana: 
+  #   host: grafana.momo-store.koolthing.click
+  #   backend: 
+  #     name: momo-store-grafana
+  #     port: 80

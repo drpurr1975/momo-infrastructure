@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: frontend
+  type: ClusterIP
+  ports:
+    - port: 9090
+      protocol: TCP
+      targetPort: 9090
+  sessionAffinity: None
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: prometheus-loadbalancer
+#   namespace: {{ .Release.Namespace }}
+#   labels:
+#     app: prometheus
+# spec:
+#   type: LoadBalancer
+#   # loadBalancerIP: 130.193.59.166
+#   ports:
+#     - port: 9090
+#       name: plaintext
+#       targetPort: 9090
+#   selector:
+#     app: prometheus

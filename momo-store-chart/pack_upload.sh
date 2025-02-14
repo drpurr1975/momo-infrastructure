@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Рекурсивно ищем файлы Chart.yaml
-find . -type f -name "Chart.yaml" | while read -r chart_file; do
+find $(dirname $0) -type f -name "Chart.yaml" | while read -r chart_file; do
     chart_dir=$(dirname "$chart_file")
     
     # Извлекаем имя чарта и версию из Chart.yaml

@@ -29,15 +29,5 @@ variable "size_max" {
 variable "cluster_name" {
   type        = string
   default     = "momo-store"
-  description = "Name of the Kubernetes cluster"  
-}
-variable "subnet_id" {
-  type        = string
-  default     = "fl86j1k5qddvoef4e9hq"
-  description = "ID of the subnet"
-}
-variable "network_id" {
-  type        = string
-  default     = "enpuhc98a2jpm6jjrsfh"
-  description = "ID of the network"
+  description = "Name of the Kubernetes cluster"
 }

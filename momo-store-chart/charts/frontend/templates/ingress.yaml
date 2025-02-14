@@ -1,22 +1,54 @@
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: {{ .Chart.Name }}
-#   namespace: {{ .Release.Namespace }}
-# spec:
-#   ingressClassName: "nginx"
-#   tls:
-#     - hosts:
-#         - "{{ .Values.ingress.host }}"
-#   rules:
-#   - host: "{{ .Values.ingress.host }}"
-#     http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: {{ .Chart.Name }}-service
-#             port:
-#               number: {{ .Values.service.ports.port }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # ingress.alb.yc.io/subnets: {{ .Values.subnetID }}
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # ingress.alb.yc.io/external-ipv4-address: "auto"
+    # ingress.alb.yc.io/external-ipv4-address: {{ .Values.externalIP }}
+    # ingress.alb.yc.io/group-name: momo-store
+spec:
+  ingressClassName: nginx
+  # tls:
+  #   - hosts:
+  #     - "{{ .Values.app.host }}"
+  #     secretName: yc-certmgr-cert-id-fpq8mi49s0q05pk0q2kh
+  #   - hosts:
+  #     - "{{ .Values.grafana.host }}"
+  #     secretName: yc-certmgr-cert-id-fpq8mi49s0q05pk0q2kh
+  rules:
+  - host: "{{ .Values.app.host }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Chart.Name }}-service
+            port:
+              number: {{ .Values.app.port }}
+  rules:
+  - host: "{{ .Values.prometheus.host }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-grafana
+            port:
+              number: {{ .Values.prometheus.port }}
+  # - host: "{{ .Values.grafana.host }}"
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: grafana
+  #           port:
+  #             number: {{ .Values.service.ports.port }}

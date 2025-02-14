@@ -9,6 +9,10 @@ dependencies:
   - name: momo-backend
     version: "{{ .Chart.Version }}"
     repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+    # repository: https://nexus.praktikum-services.tech/repository/sausage-store-helm-mikhail-kurenkov-033-new/
   - name: momo-frontend
     version: "{{ .Chart.Version }}"
     repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+    # repository: https://nexus.praktikum-services.tech/repository/sausage-store-helm-mikhail-kurenkov-033-new/
+  # - name: momo-cert
+  #   version: "{{ .Chart.Version }}"

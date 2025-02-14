@@ -11,13 +11,21 @@ resources:
 strategy:
   type: Recreate
   rollingUpdate:
-    maxSurge: 25%
+    maxSurge: 1
     maxUnavailable: 1
 replicas: 1
 revisionHistoryLimit: 12
 # The variables are used in the ingress.yaml file.
-ingress:
-  host: "surname-first_name-cohort00.k8s.praktikum-services.tech" #dummy value
+app:
+  host: momo-store.koolthing.click
+  port: 
+prometheus:
+  host: prometheus.koolthing.click
+  port: 80
+grafana:
+  host: grafana.koolthing.click
+externalIP: 130.193.59.166
+subnetID: fl86j1k5qddvoef4e9hq  
 # The variables are used in the vpa.yaml file.
 updatePolicy:
   updateMode: "Off"
@@ -34,4 +42,3 @@ service:
   ports:
     port: 80
     targetPort: 8080
-  loadBalancerIP: 130.193.59.166
