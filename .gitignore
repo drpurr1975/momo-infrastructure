@@ -19,16 +19,9 @@ crash.*.log
 # to change depending on the environment.
 *.tfvars
 *.tfvars.json
-<<<<<<< HEAD
 **/.terraform.*
 **/.terraform/
 **/.terraform.lock.hcl
-=======
-.terraform.*
-**/.terraform/
-**/.terraform.lock.hcl
-
->>>>>>> 28b171f (add many hotfixes for terrafrom manifests and helm charts)
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in

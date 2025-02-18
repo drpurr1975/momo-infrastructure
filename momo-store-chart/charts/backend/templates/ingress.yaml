@@ -7,15 +7,16 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "yc-clusterissuer"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true" 
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - "{{ .Values.app.host }}"
-      secretName: frontend-domain-secret
+      - "{{ .Values.backend.host }}"
+      secretName: backend-domain-secret
   rules:
-  - host: "{{ .Values.app.host }}"
+  - host: "{{ .Values.backend.host }}"
     http:
       paths:
       - path: /
@@ -24,4 +25,4 @@ spec:
           service:
             name: {{ .Chart.Name }}-service
             port:
-              number: {{ .Values.app.port }}
+              number: {{ .Values.backend.port }}

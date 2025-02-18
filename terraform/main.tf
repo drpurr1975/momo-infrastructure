@@ -40,12 +40,9 @@ module "kube" {
       fixed_scale = {
         size = var.size
       }
-<<<<<<< HEAD
-=======
       node_cores  = 4
       node_memory = 8
       disk_size   = 64
->>>>>>> 28b171f (add many hotfixes for terrafrom manifests and helm charts)
       node_labels = {
         role        = "worker-01"
         environment = "prod"
@@ -92,7 +89,7 @@ module "helm" {
   cluster_id = module.kube.cluster_id
 
   install_ingress_nginx     = true
-  install_prometheus        = false
+  install_prometheus        = true
   install_external_secrets  = true
 
   ingress_nginx = {

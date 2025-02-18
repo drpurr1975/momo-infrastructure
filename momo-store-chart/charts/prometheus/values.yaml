@@ -19,7 +19,8 @@
 
 yandex_cloud_services: [
   # - service: managed-kubernetes
-  #   serviceId: "catufv50mjg82dbvhh59"
+  #   serviceId: "catf7jk4p9bm189sa8j1"
+  #   folderId: "b1gnuvue6d2ju33503m5"
 ]
 name: prometheus
 prometheus:
