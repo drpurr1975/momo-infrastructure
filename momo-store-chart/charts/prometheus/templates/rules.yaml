@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus-rules
+  name: {{ .Values.name }}-rules
   namespace: {{ .Release.Namespace }}
   labels:
-    app: prometheus
+    app: {{ .Values.name }}
 data:
   {{- $files := .Files }}
   {{- range $key, $value := .Files }}

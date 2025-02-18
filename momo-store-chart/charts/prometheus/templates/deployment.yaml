@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus
+  name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: prometheus
-    provider: prometheus
+    app: {{ .Values.name }}
+    provider: {{ .Values.name }}
 spec:
   selector:
     matchLabels:
-      app: prometheus
+      app: {{ .Values.name }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: prometheus
+        app: {{ .Values.name }}
       annotations:
         co.elastic.logs/enabled: "true"
         co.elastic.logs/format: zap
@@ -23,6 +23,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 90
       restartPolicy: Always
+      serviceAccountName: {{ .Values.name }}
       volumes:
       - name: timezone-moscow
         hostPath:
@@ -34,7 +35,7 @@ spec:
         configMap:
           name: prometheus-rules
       containers:
-      - name: prometheus
+      - name: {{ .Values.name }}
         image: prom/prometheus
         args:
           - --config.file=/etc/prometheus/prometheus.yml

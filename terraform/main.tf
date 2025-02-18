@@ -92,7 +92,7 @@ module "helm" {
   cluster_id = module.kube.cluster_id
 
   install_ingress_nginx     = true
-  install_prometheus        = true
+  install_prometheus        = false
   install_external_secrets  = true
 
   ingress_nginx = {

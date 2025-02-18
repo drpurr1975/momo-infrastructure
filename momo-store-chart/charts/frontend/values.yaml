@@ -18,12 +18,7 @@ revisionHistoryLimit: 12
 # The variables are used in the ingress.yaml file.
 app:
   host: momo-store.koolthing.click
-  port: 
-prometheus:
-  host: prometheus.koolthing.click
   port: 80
-grafana:
-  host: grafana.koolthing.click
 externalIP: 130.193.59.166
 subnetID: fl86j1k5qddvoef4e9hq  
 # The variables are used in the vpa.yaml file.

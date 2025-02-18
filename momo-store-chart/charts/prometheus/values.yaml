@@ -21,3 +21,13 @@ yandex_cloud_services: [
   # - service: managed-kubernetes
   #   serviceId: "catufv50mjg82dbvhh59"
 ]
+name: prometheus
+prometheus:
+  host: prometheus.koolthing.click
+  port: 80
+grafana:
+  host: grafana.koolthing.click
+service:
+  ports:
+    port: 80
+    targetPort: 9090

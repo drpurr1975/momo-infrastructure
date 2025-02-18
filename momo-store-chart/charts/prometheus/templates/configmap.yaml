@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus-conf
+  name: {{ .Values.name }}-conf
   namespace: {{ .Release.Namespace }}
   labels:
-    app: prometheus
+    app: {{ .Values.name }}
 data:
   prometheus.yml: |
     global:
@@ -19,7 +19,7 @@ data:
       - role: pod
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - default
       relabel_configs:
       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
         action: keep

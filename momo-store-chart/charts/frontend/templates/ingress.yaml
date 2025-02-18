@@ -13,13 +13,7 @@ metadata:
     # ingress.alb.yc.io/group-name: momo-store
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #     - "{{ .Values.app.host }}"
-  #     secretName: yc-certmgr-cert-id-fpq8mi49s0q05pk0q2kh
-  #   - hosts:
-  #     - "{{ .Values.grafana.host }}"
-  #     secretName: yc-certmgr-cert-id-fpq8mi49s0q05pk0q2kh
+
   rules:
   - host: "{{ .Values.app.host }}"
     http:
@@ -31,24 +25,3 @@ spec:
             name: {{ .Chart.Name }}-service
             port:
               number: {{ .Values.app.port }}
-  rules:
-  - host: "{{ .Values.prometheus.host }}"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-grafana
-            port:
-              number: {{ .Values.prometheus.port }}
-  # - host: "{{ .Values.grafana.host }}"
-  #   http:
-  #     paths:
-  #     - path: /
-  #       pathType: Prefix
-  #       backend:
-  #         service:
-  #           name: grafana
-  #           port:
-  #             number: {{ .Values.service.ports.port }}

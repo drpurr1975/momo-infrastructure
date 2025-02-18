@@ -1,11 +1,11 @@
 ---
 groups:
-  - name: Sausage store rules
+  - name: Momo Store rules
     rules:
     - alert: InstanceDown
       expr: up{app="backend"} == 0
       for: 1m
       labels:
         severity: critical
-        project: "sausage_store"
+        project: "momo-store"
         component: "Backend"
