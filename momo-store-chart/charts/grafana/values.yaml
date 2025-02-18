@@ -1,0 +1,8 @@
+name: grafana
+grafana:
+  host: grafana.koolthing.click
+  port: 80
+service:
+  ports:
+    port: 80
+    targetPort: 3000

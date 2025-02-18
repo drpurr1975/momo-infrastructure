@@ -15,3 +15,6 @@ dependencies:
   - name: prometheus
     version: "0.0.1"
     repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+  - name: grafana
+    version: "0.17.0"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"

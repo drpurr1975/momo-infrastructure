@@ -45,14 +45,6 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-{{/*         env:
-           - name: VAULT_ADDR
-             value: "{{ .Values.env.vaultAddr }}"
-           - name: VAULT_TOKEN
-             valueFrom:
-               secretKeyRef:
-                 name: vault
-                 key: vault_token */}}
           ports:
             - name: "{{ .Chart.Name }}"
               containerPort: {{ .Values.service.ports.port }}

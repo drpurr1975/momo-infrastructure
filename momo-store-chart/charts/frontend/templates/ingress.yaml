@@ -6,14 +6,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    # ingress.alb.yc.io/subnets: {{ .Values.subnetID }}
-    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    # ingress.alb.yc.io/external-ipv4-address: "auto"
-    # ingress.alb.yc.io/external-ipv4-address: {{ .Values.externalIP }}
-    # ingress.alb.yc.io/group-name: momo-store
 spec:
   ingressClassName: nginx
-
   rules:
   - host: "{{ .Values.app.host }}"
     http:
