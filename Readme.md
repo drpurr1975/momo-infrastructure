@@ -1,4 +1,8 @@
 # momo-store
+---
+### Пельменная №2 <https://momo-store.koolthing.click>
+### Prometheus <https://prometheus.koolthing.click>
+### Grafana <https://grafana.koolthing.click>
 
 ## Описание проекта
 
@@ -6,11 +10,11 @@
 
 1. **CI/CD для фронтенда и бэкенда** — сборка, версионирование и хранение артефактов в GitLab Container Registry.
 
-## [`CI/CD Repo`](https://gitlab.praktikum-services.ru/std-033-59/momo-store.git)
+### CI/CD Repo <https://gitlab.praktikum-services.ru/std-033-59/momo-store.git>
 
 2. **Развёртывание инфраструктуры** — автоматизированное создание инфраструктуры в Яндекс Облаке с помощью Terraform и деплой приложения с использованием Helm.
 
-## [`Infrastructure Repo`](https://gitlab.praktikum-services.ru/std-033-59/momo-infrastructure.git)
+### Infrastructure Repo <https://gitlab.praktikum-services.ru/std-033-59/momo-infrastructure.git>
 
 Необходимые **секреты и другие переменные** для сборки **фронтенда и бэкенда**, а также для **автоматического развертывания инфраструктуры** хранятся в **GitLab CI/CD**.
 
@@ -25,10 +29,13 @@ Helm-чарты **версионируются вручную** и хранят�
 
 ### 1. Подготовка окружения
 
+Требуется минимальная подготовка окружения для деплоя.
+Вся инфраструктура описана IaC и разворачивается почти полностью автоматически.
+
 ✅ Установите:
-- [`Terraform`](https://developer.hashicorp.com/terraform/downloads)
-- [`Helm`](https://helm.sh/docs/intro/install/)
-- [`kubectl`](https://kubernetes.io/docs/tasks/tools/)
+1. [`Terraform`](https://developer.hashicorp.com/terraform/downloads)
+2. [`Helm`](https://helm.sh/docs/intro/install/)
+3. [`kubectl`](https://kubernetes.io/docs/tasks/tools/)
 
 ✅ Настройте переменные **GitLab CI/CD** и **Инфраструктуры** для хранения **секретов и репозиториев**.  
 ✅ Подготовьте **Nexus** для хранения **Helm-чартов**.
@@ -57,6 +64,7 @@ helm repo add nexus $NEXUS_HELM_REPO --username $NEXUS_USERNAME --password $NEXU
 helm repo update
 helm upgrade --install momo-store --namespace="default" --atomic --timeout 30m nexus/momo-store-chart
 ```
+---
 
 ## Устройство репозитория
 ### 📁 Репозиторий CI/CD
@@ -93,6 +101,7 @@ momo-store-chart/  # Helm-чарты
 .gitlab-ci.yml  # Пайплайны для автоматического деплоя инфраструктуры
 .yc_auth.sh     # Скрипт авторизации в Яндекс Облаке
 ```
+---
 
 ## 🛠️ Правила внесения изменений в инфраструктуру
 Все изменения в инфраструктуре вносятся через MR в репозиторий инфраструктуры.
@@ -102,6 +111,7 @@ momo-store-chart/  # Helm-чарты
 ```bash
 terraform apply -var="cloud_id=$YC_CLOUD_ID" -var="folder_id=$YC_FOLDER_ID"
 ```
+---
 
 ## 🔄 Релизный цикл и версионирование
 Приложение: Контейнеры версионируются по **${CI_PIPELINE_ID}** с добавлением тега **latest** для последней сборки.
