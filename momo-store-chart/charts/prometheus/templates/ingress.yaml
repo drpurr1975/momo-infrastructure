@@ -6,14 +6,15 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "yc-clusterissuer"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - prometheus.koolthing.click
-      secretName: prometheus-domain-secret
+        - {{ .Values.prometheus.host }}
+      secretName: {{ .Values.name }}-domain-secret
   rules:
   - host: "{{ .Values.prometheus.host }}"
     http:
