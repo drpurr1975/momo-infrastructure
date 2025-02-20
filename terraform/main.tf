@@ -36,9 +36,10 @@ module "kube" {
 
   node_groups = {
     "yc-k8s-ng-01" = {
-      description = "Kubernetes nodes group 01"
-      fixed_scale = {
-        size = var.size
+      auto_scale = {
+        min     = var.size_min
+        max     = var.size_max
+        initial = var.size_initial
       }
       node_cores  = 4
       node_memory = 8
@@ -89,8 +90,7 @@ module "helm" {
   cluster_id = module.kube.cluster_id
 
   install_ingress_nginx     = true
-  install_prometheus        = true
-  install_external_secrets  = true
+  install_cert_manager      = true
 
   ingress_nginx = {
     replica_count = 1
@@ -99,7 +99,9 @@ module "helm" {
     create_namespace                    = true
     namespace                           = "ingress-nginx"
   }
-  external_secrets = {
+  cert_manager = {
     service_account_key = file("/tmp/yc-sa-key.json")
+    folder_id = var.folder_id
+    email_address = "dr.purr@gmail.com"
   }
 }
