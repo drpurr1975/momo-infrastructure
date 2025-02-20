@@ -1,0 +1,14 @@
+apiVersion: v2
+name: momo-store-chart
+description: A Momo Store Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.1"
+
+dependencies:
+  - name: momo-backend
+    version: "{{ .Chart.Version }}"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"
+  - name: momo-frontend
+    version: "{{ .Chart.Version }}"
+    repository: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}"

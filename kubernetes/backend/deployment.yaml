@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 25%
+  revisionHistoryLimit: 12
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: gitlab.praktikum-services.ru:5050/std-033-59/momo-store/momo-backend:latest
+          resources:
+            requests:
+              cpu: "0.2"
+            limits:
+              cpu: "0.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: backend 
+              containerPort: 8081
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          envFrom:
+          - configMapRef:
+              name: backend-config
+      imagePullSecrets:
+        - name: backend-secrets

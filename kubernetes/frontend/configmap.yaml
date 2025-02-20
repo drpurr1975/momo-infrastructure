@@ -6,39 +6,33 @@ metadata:
   namespace: default
 data:
   nginx.conf: |
-    server {
-        listen 8080;
-        server_name localhost;
+    events {
+    }
+    http {
+      server {
+          listen 8080;
+          server_name localhost;
 
-        root /usr/share/nginx/html;
+          root /usr/share/nginx/html;
         index index.html index.htm index.nginx-debian.html;
-
-        location /css/ {
-            root /usr/share/nginx/html;
+          
+          location /auth {
+              proxy_pass http://backend-service:8081;
+          }
+          location /products {
+              proxy_pass http://backend-service:8081/products;
+          }
+          location /categories {
+              proxy_pass http://backend-service:8081/categories;
+          }
+            location /catalog/products {
+              proxy_pass http://backend-service:8081/products;
+          }
+          location /catalog/categories {
+              proxy_pass http://backend-service:8081/categories;
+          }
+        location / {
+          try_files $uri $uri/ =404;
         }
-        location /img/ {
-            root /usr/share/nginx/html;
-        }
-        location /js/ {
-            root /usr/share/nginx/html;
-        }
-        
-        location /auth {
-            proxy_pass http://backend-service:8081;
-        }
-        location /products {
-            proxy_pass http://backend-service:8081/products;
-        }
-        location /categories {
-            proxy_pass http://backend-service:8081/categories;
-        }
-          location /catalog/products {
-            proxy_pass http://backend-service:8081/products;
-        }
-        location /catalog/categories {
-            proxy_pass http://backend-service:8081/categories;
-        }
-      location / {
-        try_files $uri $uri/ =404;
       }
     }

@@ -1,0 +1,7 @@
+global:
+  image:
+    registry: gitlab.praktikum-services.ru:5050
+    repository: std-033-59/momo-store
+  appname: momo-store
+  environment: prod
+  repository: https://nexus.praktikum-services.tech/repository/sausage-store-helm-mikhail-kurenkov-033-new/

@@ -52,8 +52,6 @@ module "kube" {
       nat = true
     }
   }
-<<<<<<< HEAD
-=======
   cluster_name = var.cluster_name
   public_access = true
   
@@ -65,5 +63,4 @@ module "kube" {
   #     port = 80
   #   }
   # }
->>>>>>> 7177436 (add terraform balancer target group)
 }
