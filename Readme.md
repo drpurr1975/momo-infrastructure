@@ -10,11 +10,11 @@
 
 1. **CI/CD для фронтенда и бэкенда** — сборка, версионирование и хранение артефактов в GitLab Container Registry.
 
-### CI/CD Repo <https://gitlab.praktikum-services.ru/std-033-59/momo-store.git>
+### CI/CD Repo <https://github.com/drpurr1975/momo-store.git>
 
 2. **Развёртывание инфраструктуры** — автоматизированное создание инфраструктуры в Яндекс Облаке с помощью Terraform и деплой приложения с использованием Helm.
 
-### Infrastructure Repo <https://gitlab.praktikum-services.ru/std-033-59/momo-infrastructure.git>
+### Infrastructure Repo <https://github.com/drpurr1975/momo-infrastructure.git>
 
 Необходимые **секреты и другие переменные** для сборки **фронтенда и бэкенда**, а также для **автоматического развертывания инфраструктуры** хранятся в **GitLab CI/CD**.
 
