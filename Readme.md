@@ -1,8 +1,8 @@
 # momo-store
 ---
-### Пельменная №2 <https://momo-store.koolthing.click>
+<!-- ### Пельменная №2 <https://momo-store.koolthing.click>
 ### Prometheus <https://prometheus.koolthing.click>
-### Grafana <https://grafana.koolthing.click>
+### Grafana <https://grafana.koolthing.click> -->
 
 ## Описание проекта
 
